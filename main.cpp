@@ -5,32 +5,32 @@
 
 int main() {
     // Example usage
-    Comparator Comparator = [](const Item& a, const Item& b) {
-        return a.price > b.price;
+    Comparator maxComparator = [](const Item& a, const Item& b) {
+        return a.itemName > b.itemName;
+    };
+    Comparator minComparator = [](const Item& a, const Item& b) {
+        return a.itemName < b.itemName;
     };
 
-    MaxHeap maxHeap(Comparator);
+    MaxHeap maxHeap(maxComparator);
 
     // Insert items
     readItemsFromFile("items.txt", &maxHeap);
 
     // Set comparator dynamically based on user choice
     // Get and print max item
-    cout << "Max item according to price: ";
+    cout << "Max item according to name: ";
     maxHeap.getTop()->print();
 
-    MinHeap minHeap(Comparator);
+    MinHeap minHeap(minComparator);
     readItemsFromFile("items.txt", &minHeap);
 
-    cout << "Min item according to price: ";
+    cout << "Min item according to name: ";
     minHeap.getTop()->print();
 
-    HeapSort(&minHeap);
+    //HeapSort(&minHeap);
     // Print the sorted heap
-    cout << "\nSorted Heap:" << endl;
-    while (minHeap.getTop()) {
-        minHeap.getTop()->print();
-        minHeap.removeTop();
-    }
+    //cout << "\nSorted Heap:" << endl;
+    minHeap.display();
     return 0;
 }

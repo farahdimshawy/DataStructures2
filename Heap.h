@@ -29,8 +29,16 @@ public:
     Heap(Comparator comp) : comparator(std::move(comp)) {}
 
     void insert(Item* item) {
+        int i = heap.size();
         heap.emplace_back(new HeapNode(item));
-        heapifyUp(heap.size() - 1);
+        HeapNode* temp = heap[i]; // Store the newly inserted node
+
+        while (i > 0 && comparator(*temp->item, *heap[(i - 1) / 2]->item)) {
+            heap[i] = heap[(i - 1) / 2]; // Move parent down
+            i = (i - 1) / 2; // Move to the parent index
+        }
+
+        heap[i] = temp;
     }
 
     Item* getTop() {
@@ -51,16 +59,17 @@ public:
             delete node;
         }
     }
+    void display(){
+        while (getTop()) {
+            getTop()->print();
+            removeTop();
+        }
+    }
     friend void HeapSort(Heap* heap);
 };
 
 void HeapSort(Heap *heap) {
     // Perform heap sort directly on the provided heap
-    // Build max heap
-    for (int i = heap->heap.size() / 2 - 1; i >= 0; --i) {
-        heap->heapifyDown(i);
-    }
-
     // Perform heap sort
     for (int i = heap->heap.size() - 1; i >= 0; --i) {
         // Delete the root element (the largest element in the heap)
@@ -77,10 +86,13 @@ class MaxHeap : public Heap {
 private:
     void heapifyUp(int index) override {
         int parent = (index - 1) / 2;
-        while (index > 0 && comparator(*heap[index]->item, *heap[parent]->item)) {
-            swap(heap[index], heap[parent]);
-            index = parent;
-            parent = (index - 1) / 2;
+        while (index > 0) {
+            if (comparator(*heap[index]->item, *heap[parent]->item)) {
+                swap(heap[index], heap[parent]);
+                index = parent;
+            } else {
+                break; // Stop if the parent is smaller
+            }
         }
     }
 
@@ -110,23 +122,27 @@ public:
 class MinHeap : public Heap {
 private:
     void heapifyUp(int index) override {
-        int parent = (index - 1) / 2;
-        while (index > 0 && !comparator(*heap[index]->item, *heap[parent]->item)) {
-            swap(heap[index], heap[parent]);
-            index = parent;
-            parent = (index - 1) / 2;
+        while (index > 0) {
+            int parent = (index - 1) / 2;
+            // Swap if the parent is greater than the current node
+            if (comparator(*heap[index]->item, *heap[parent]->item)) {
+                swap(heap[index], heap[parent]);
+                index = parent;
+            } else {
+                break; // Stop if the parent is smaller
+            }
         }
     }
-
     void heapifyDown(int index) override {
         int leftChild = 2 * index + 1;
         int rightChild = 2 * index + 2;
         int smallest = index;
 
-        if (leftChild < heap.size() && !comparator(*heap[leftChild]->item, *heap[smallest]->item)) {
+        if (leftChild < heap.size() && comparator(*heap[leftChild]->item, *heap[smallest]->item)) {
             smallest = leftChild;
         }
-        if (rightChild < heap.size() && !comparator(*heap[rightChild]->item, *heap[smallest]->item)) {
+        //if right child is smaller than the smallest, make smallest = right child
+        if (rightChild < heap.size() && comparator(*heap[rightChild]->item, *heap[smallest]->item)) {
             smallest = rightChild;
         }
 
