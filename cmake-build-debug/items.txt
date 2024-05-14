@@ -1,0 +1,45 @@
+Chocolate Milk
+Drink
+10
+Bananas
+Fruit
+75
+Pepsi
+Drink
+20
+Cheddar Cheese
+Dairy
+49
+Tuna
+Meat
+90
+Fanta Orange
+Drink
+20
+Yogurt
+Dairy
+13
+Mint Gum
+Candy
+2
+Water
+Drink
+9
+Apples
+Fruit
+66
+Beef
+Meat
+284
+Cheesecake
+Dessert
+68
+Ice-cream
+Dessert
+30
+Lemonade
+Drink
+15
+Strawberries
+Fruit
+40

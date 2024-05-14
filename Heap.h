@@ -1,0 +1,174 @@
+//
+// Created by farah on 14/05/2024.
+//
+
+#ifndef DATASTRUCTURES2_HEAP_H
+#define DATASTRUCTURES2_HEAP_H
+#include <utility>
+#include <fstream>
+#include <sstream>
+#include "Item.h"
+class HeapNode{
+public:
+    Item* item;
+
+    explicit HeapNode(Item* item) : item(item) {}
+};
+
+using Comparator = function<bool(const Item&, const Item&)>;\
+
+class Heap {
+protected:
+    vector<HeapNode*> heap;
+    Comparator comparator;
+
+    virtual void heapifyUp(int index) = 0;
+    virtual void heapifyDown(int index) = 0;
+
+public:
+    Heap(Comparator comp) : comparator(std::move(comp)) {}
+
+    void insert(Item* item) {
+        heap.emplace_back(new HeapNode(item));
+        heapifyUp(heap.size() - 1);
+    }
+
+    Item* getTop() {
+        if (heap.empty()) return nullptr;
+        return heap[0]->item;
+    }
+
+    virtual void removeTop() {
+        if (heap.empty()) return;
+        delete heap[0];
+        heap[0] = heap.back();
+        heap.pop_back();
+        heapifyDown(0);
+    }
+
+    virtual ~Heap() {
+        for (auto node : heap) {
+            delete node;
+        }
+    }
+    friend void HeapSort(Heap* heap);
+};
+
+void HeapSort(Heap *heap) {
+    // Perform heap sort directly on the provided heap
+    // Build max heap
+    for (int i = heap->heap.size() / 2 - 1; i >= 0; --i) {
+        heap->heapifyDown(i);
+    }
+
+    // Perform heap sort
+    for (int i = heap->heap.size() - 1; i >= 0; --i) {
+        // Delete the root element (the largest element in the heap)
+        HeapNode* temp = heap->heap[0];
+        heap->heap[0] = heap->heap[i];
+        heap->heap[i] = temp;
+
+        // Heapify down to restore the heap property
+        heap->heapifyDown(0);
+    }
+}
+
+class MaxHeap : public Heap {
+private:
+    void heapifyUp(int index) override {
+        int parent = (index - 1) / 2;
+        while (index > 0 && comparator(*heap[index]->item, *heap[parent]->item)) {
+            swap(heap[index], heap[parent]);
+            index = parent;
+            parent = (index - 1) / 2;
+        }
+    }
+
+    void heapifyDown(int index) override {
+        int leftChild = 2 * index + 1;
+        int rightChild = 2 * index + 2;
+        int largest = index;
+
+        if (leftChild < heap.size() && comparator(*heap[leftChild]->item, *heap[largest]->item)) {
+            largest = leftChild;
+        }
+        if (rightChild < heap.size() && comparator(*heap[rightChild]->item, *heap[largest]->item)) {
+            largest = rightChild;
+        }
+
+        if (largest != index) {
+            swap(heap[index], heap[largest]);
+            heapifyDown(largest);
+        }
+    }
+
+public:
+    MaxHeap(Comparator comp) : Heap(comp) {}
+};
+
+// MinHeap class derived from Heap
+class MinHeap : public Heap {
+private:
+    void heapifyUp(int index) override {
+        int parent = (index - 1) / 2;
+        while (index > 0 && !comparator(*heap[index]->item, *heap[parent]->item)) {
+            swap(heap[index], heap[parent]);
+            index = parent;
+            parent = (index - 1) / 2;
+        }
+    }
+
+    void heapifyDown(int index) override {
+        int leftChild = 2 * index + 1;
+        int rightChild = 2 * index + 2;
+        int smallest = index;
+
+        if (leftChild < heap.size() && !comparator(*heap[leftChild]->item, *heap[smallest]->item)) {
+            smallest = leftChild;
+        }
+        if (rightChild < heap.size() && !comparator(*heap[rightChild]->item, *heap[smallest]->item)) {
+            smallest = rightChild;
+        }
+
+        if (smallest != index) {
+            swap(heap[index], heap[smallest]);
+            heapifyDown(smallest);
+        }
+    }
+
+
+public:
+    MinHeap(Comparator comp) : Heap(comp) {}
+};
+
+void readItemsFromFile(const string& filename, Heap* heap) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Error: Unable to open file: " << filename << endl;
+        return;
+    }
+
+    string line;
+    string name, category;
+    int price;
+
+    while (getline(file, line)) {
+        name = line;
+
+        // Read category
+        getline(file, category);
+
+        // Read price
+        file >> price;
+        file.ignore(); // Consume newline
+
+        // Create Item object and insert into heap
+        heap->insert(new Item(name, category, price));
+    }
+
+    file.close();
+}
+
+
+
+#endif //DATASTRUCTURES2_HEAP_H
