@@ -15,7 +15,7 @@ public:
     explicit HeapNode(Item* item) : item(item) {}
 };
 
-using Comparator = function<bool(const Item&, const Item&)>;\
+using Comparator = function<bool(const Item&, const Item&)>;
 
 class Heap {
 protected:
