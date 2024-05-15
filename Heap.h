@@ -7,6 +7,8 @@
 #include <utility>
 #include <fstream>
 #include <sstream>
+#include <vector>
+#include <functional>
 #include "Item.h"
 class HeapNode{
 public:
