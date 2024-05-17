@@ -67,22 +67,11 @@ public:
             removeTop();
         }
     }
-    friend void HeapSort(Heap* heap);
+    friend Heap* AscHeapSort(Heap* heap);
+    friend Heap* DescHeapSort(Heap* heap);
 };
 
-void HeapSort(Heap *heap) {
-    // Perform heap sort directly on the provided heap
-    // Perform heap sort
-    for (int i = heap->heap.size() - 1; i >= 0; --i) {
-        // Delete the root element (the largest element in the heap)
-        HeapNode* temp = heap->heap[0];
-        heap->heap[0] = heap->heap[i];
-        heap->heap[i] = temp;
 
-        // Heapify down to restore the heap property
-        heap->heapifyDown(0);
-    }
-}
 
 class MaxHeap : public Heap {
 private:
@@ -187,6 +176,33 @@ void readItemsFromFile(const string& filename, Heap* heap) {
     file.close();
 }
 
+Heap* AscHeapSort(Heap *heap) {
+    // Perform heap sort directly on the provided heap
+    Heap *sortedheap = new MinHeap(heap->comparator);
+    // Perform heap sort
+    int n = heap->heap.size()-1;
 
+    for (int i = n; i >= 0; --i) {
+        HeapNode root = HeapNode(heap->getTop());
+        heap->removeTop();
+        sortedheap->insert(root.item);
+    }
+    return sortedheap;
+}
+
+
+Heap* DescHeapSort(Heap *heap) {
+    // Perform heap sort directly on the provided heap
+    Heap *sortedheap = new MaxHeap(heap->comparator);
+    // Perform heap sort
+    int n = heap->heap.size()-1;
+
+    for (int i = n; i >= 0; --i) {
+        HeapNode root = HeapNode(heap->getTop());
+        heap->removeTop();
+        sortedheap->insert(root.item);
+    }
+    return sortedheap;
+}
 
 #endif //DATASTRUCTURES2_HEAP_H
