@@ -30,8 +30,11 @@ public:
     void insert(Item* item);
     void inorderASC(Node* r);
     void inorderDESC(Node* r);
+    void Delete(string name);
+    void Delete(Node* parent, Node* current);
 
     Node* search(string name);
+    Node* parent_search(string name);
 };
 
 
