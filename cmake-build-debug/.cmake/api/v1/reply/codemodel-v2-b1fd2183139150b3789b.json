@@ -6,10 +6,10 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.28"
+						"string" : "3.26"
 					},
 					"projectIndex" : 0,
 					"source" : ".",
@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "DataStructures2::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-DataStructures2-Debug-9d966777cf71cce94922.json",
+					"jsonFile" : "target-DataStructures2-Debug-7d5ea275f28bb48b96a3.json",
 					"name" : "DataStructures2",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/farah/CLionProjects/DataStructures2/cmake-build-debug",
-		"source" : "/Users/farah/CLionProjects/DataStructures2"
+		"build" : "D:/CPP/DSA/DataStructures2/cmake-build-debug",
+		"source" : "D:/CPP/DSA/DataStructures2"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 6
+		"minor" : 5
 	}
 }

@@ -14,9 +14,16 @@ class Item {
 public:
     string itemName;
     string category;
-    int price;
+    double price;
 
     Item(string name, string cat, int p) : itemName(std::move(name)), category(std::move(cat)), price(p) {}
+
+    bool operator<(const Item& otherItem) const {
+        return this->itemName < otherItem.itemName;
+    }
+    bool operator>=(const Item& otherItem) const{
+        return this->itemName >= otherItem.itemName;
+    }
 
     void print() const {
         cout << "\nItem: " << itemName << "\nCategory: " << category << "\nPrice: " << price << endl;
