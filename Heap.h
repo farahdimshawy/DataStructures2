@@ -76,14 +76,14 @@ public:
 
 class MaxHeap : public Heap {
 private:
-    void heapifyUp(int index) override {//
+    void heapifyUp(int index) override {
         int parent = (index - 1) / 2;
-        while (index > 0) { // as long as current node is not a root node
+        while (index > 0) {
             if (comparator(*heap[index]->item, *heap[parent]->item)) {
-                swap(heap[index], heap[parent]); //if node greater than parent, move up by swapping
-                index = parent; //update index
+                swap(heap[index], heap[parent]);
+                index = parent;
             } else {
-                break; // Stop if the parent is smaller (current node is in correct position)
+                break; // Stop if the parent is smaller
             }
         }
     }
