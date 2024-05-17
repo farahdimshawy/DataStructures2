@@ -67,27 +67,26 @@ public:
             removeTop();
         }
     }
-    friend Heap* AscHeapSort(Heap* heap);
-    friend Heap* DescHeapSort(Heap* heap);
+    friend Heap* HeapSort(Heap* heap);
 };
 
 
 
 class MaxHeap : public Heap {
 private:
-    void heapifyUp(int index) override {//
+    void heapifyUp(int index) override {
         int parent = (index - 1) / 2;
-        while (index > 0) { // as long as current node is not a root node
+        while (index > 0) {
             if (comparator(*heap[index]->item, *heap[parent]->item)) {
-                swap(heap[index], heap[parent]); //if node greater than parent, move up by swapping
-                index = parent; //update index
+                swap(heap[index], heap[parent]);
+                index = parent;
             } else {
-                break; // Stop if the parent is smaller (current node is in correct position)
+                break; // Stop if the parent is smaller
             }
         }
     }
 
-    void heapifyDown(int index) override {
+    void heapifyDown(int index) override {//makes sure parent is always greater than children when root is removed
         int leftChild = 2 * index + 1;
         int rightChild = 2 * index + 2;
         int largest = index;
@@ -112,8 +111,8 @@ public:
 // MinHeap class derived from Heap
 class MinHeap : public Heap {
 private:
-    void heapifyUp(int index) override {
-        while (index > 0) {
+    void heapifyUp(int index) override { //moves newly added node up the tree to correct position
+        while (index > 0) {// as long as index isnt the root node
             int parent = (index - 1) / 2;
             // Swap if the parent is greater than the current node
             if (comparator(*heap[index]->item, *heap[parent]->item)) {
@@ -124,7 +123,7 @@ private:
             }
         }
     }
-    void heapifyDown(int index) override {
+    void heapifyDown(int index) override {//maintains heap property when root is removed
         int leftChild = 2 * index + 1;
         int rightChild = 2 * index + 2;
         int smallest = index;
@@ -176,33 +175,24 @@ void readItemsFromFile(const string& filename, Heap* heap) {
     file.close();
 }
 
-Heap* AscHeapSort(Heap *heap) {
+Heap* HeapSort(Heap *heap) {
     // Perform heap sort directly on the provided heap
+    Heap* heapCopy = new MinHeap(heap->comparator);
+    for (auto node : heap->heap) {
+        heapCopy->insert(node->item);
+    }
+
     Heap *sortedheap = new MinHeap(heap->comparator);
     // Perform heap sort
     int n = heap->heap.size()-1;
 
     for (int i = n; i >= 0; --i) {
-        HeapNode root = HeapNode(heap->getTop());
-        heap->removeTop();
+        HeapNode root = HeapNode(heapCopy->getTop());
+        heapCopy->removeTop();
         sortedheap->insert(root.item);
     }
     return sortedheap;
 }
 
-
-Heap* DescHeapSort(Heap *heap) {
-    // Perform heap sort directly on the provided heap
-    Heap *sortedheap = new MaxHeap(heap->comparator);
-    // Perform heap sort
-    int n = heap->heap.size()-1;
-
-    for (int i = n; i >= 0; --i) {
-        HeapNode root = HeapNode(heap->getTop());
-        heap->removeTop();
-        sortedheap->insert(root.item);
-    }
-    return sortedheap;
-}
 
 #endif //DATASTRUCTURES2_HEAP_H
