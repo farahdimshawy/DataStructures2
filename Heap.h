@@ -166,19 +166,13 @@ void readItemsFromFile(const string& filename, Heap* heap) {
         cerr << "Error: Unable to open file: " << filename << endl;
         return;
     }
-
     removeEmptyLines(file);
+    string number;
     string line;
     string name, category;
     int price;
-    bool firstLine = true;  // Flag to skip the first line
-
-    while (getline(file, name)) {
-        if (firstLine) {
-            firstLine = false;
-            continue;  // Skip the first line
-        }
-
+    getline(file, number);
+    while (getline(file, line)) {
         name = line;
 
         // Read category
@@ -187,13 +181,14 @@ void readItemsFromFile(const string& filename, Heap* heap) {
         // Read price
         file >> price;
         file.ignore(); // Consume newline
-        file.ignore();
+
         // Create Item object and insert into heap
         heap->insert(new Item(name, category, price));
     }
 
     file.close();
 }
+
 
 Heap* HeapSort(Heap *heap) {
     // Perform heap sort directly on the provided heap
