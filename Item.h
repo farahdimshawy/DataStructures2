@@ -16,6 +16,11 @@ public:
     string category;
     double price;
 
+    Item(){
+        itemName = "Item";
+        category = "category";
+        price = 0;
+    }
     Item(string name, string cat, int p) : itemName(std::move(name)), category(std::move(cat)), price(p) {}
 
     bool operator<(const Item& otherItem) const {
