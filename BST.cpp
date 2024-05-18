@@ -18,6 +18,9 @@ Node::Node(Item *item){
 
 BST::BST(bool sortByName) : root(NULL), sortByName(sortByName) {}
 
+bool BST::isEmpty(){
+    return root == NULL;
+}
 
 Node* BST::getRoot(){
     return root;
@@ -60,7 +63,22 @@ void BST::insert(Item* item){
     }
 }
 
+void BST::preorder(Node* r) { // root-left-right
+    if(isEmpty()){
+        cerr << "Tree is empty!\n";
+    }
+    if (r == NULL) {
+        return;
+    }
+    r->data->print();
+    inorderASC(r->left);
+    inorderASC(r->right);
+}
+
 void BST::inorderASC(Node* r) { // left-root-right
+    if(isEmpty()){
+        cerr << "Tree is empty!\n";
+    }
     if(r == NULL){
         return;
     }
@@ -69,7 +87,10 @@ void BST::inorderASC(Node* r) { // left-root-right
     inorderASC(r->right);
 }
 
-void BST::inorderDESC(Node* r){
+void BST::inorderDESC(Node* r){ // right-root-left
+    if(isEmpty()){
+        cerr << "Tree is empty!\n";
+    }
     if(r == NULL){
         return;
     }
@@ -127,7 +148,7 @@ void BST::Delete(Node* parent, Node* current){
 
 void BST::Delete(string name){
     if (root == NULL){
-        cerr<<"Tree is empty\n";
+        cerr << "Tree is empty!\n";
         return;
     }
     Node* current = root;
@@ -176,7 +197,6 @@ void BST::Delete(string name){
     }
     // third case: the node has two children
     else{
-        cerr<<"Checkpoint 3\n";
         Node* temp = minNode(current->right);
         parent = parent_search(temp->data->itemName);
         current->data->itemName = temp->data->itemName;
@@ -210,7 +230,7 @@ Node* BST::parent_search(string name) {
     return prev;
 }
 
-Node* minNode(Node* r){
+Node* BST::minNode(Node* r){
     Node* current = r;
     while(current->left != NULL){
         current = current->left;

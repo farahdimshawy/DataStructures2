@@ -6,11 +6,6 @@
 #define BST_BST_H
 #include "item.h"
 
-class Tree{
-
-};
-
-
 class Node{
 public:
     Item* data;
@@ -20,14 +15,16 @@ public:
     Node(Item* item);
 };
 
-class BST: Tree {
+class BST {
 private:
     Node* root;
     bool sortByName;
 public:
-    BST(bool sortByName);
+    BST(bool sortByName = true);
+    bool isEmpty();
     Node* getRoot();
     void insert(Item* item);
+    void preorder(Node* r);
     void inorderASC(Node* r);
     void inorderDESC(Node* r);
     void Delete(string name);
@@ -35,6 +32,7 @@ public:
 
     Node* search(string name);
     Node* parent_search(string name);
+    Node* minNode(Node* r);
 };
 
 

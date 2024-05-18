@@ -49,6 +49,15 @@ cmake_ninja_workdir = D$:/CPP/DSA/DataStructures2/cmake-build-debug/
 
 build cmake_object_order_depends_target_DataStructures2: phony || CMakeFiles/DataStructures2.dir
 
+build CMakeFiles/DataStructures2.dir/BST.cpp.obj: CXX_COMPILER__DataStructures2_unscanned_Debug D$:/CPP/DSA/DataStructures2/BST.cpp || cmake_object_order_depends_target_DataStructures2
+  DEP_FILE = CMakeFiles\DataStructures2.dir\BST.cpp.obj.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  INCLUDES = -ID:/CPP/DSA/DataStructures2/.
+  OBJECT_DIR = CMakeFiles\DataStructures2.dir
+  OBJECT_FILE_DIR = CMakeFiles\DataStructures2.dir
+  TARGET_COMPILE_PDB = CMakeFiles\DataStructures2.dir\
+  TARGET_PDB = DataStructures2.pdb
+
 build CMakeFiles/DataStructures2.dir/main.cpp.obj: CXX_COMPILER__DataStructures2_unscanned_Debug D$:/CPP/DSA/DataStructures2/main.cpp || cmake_object_order_depends_target_DataStructures2
   DEP_FILE = CMakeFiles\DataStructures2.dir\main.cpp.obj.d
   FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
@@ -66,7 +75,7 @@ build CMakeFiles/DataStructures2.dir/main.cpp.obj: CXX_COMPILER__DataStructures2
 #############################################
 # Link the executable DataStructures2.exe
 
-build DataStructures2.exe: CXX_EXECUTABLE_LINKER__DataStructures2_Debug CMakeFiles/DataStructures2.dir/main.cpp.obj
+build DataStructures2.exe: CXX_EXECUTABLE_LINKER__DataStructures2_Debug CMakeFiles/DataStructures2.dir/BST.cpp.obj CMakeFiles/DataStructures2.dir/main.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\DataStructures2.dir

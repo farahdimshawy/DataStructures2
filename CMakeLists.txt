@@ -1,8 +1,13 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.26)
 project(DataStructures2)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
-add_executable(DataStructures2 main.cpp
+include_directories(.)
+
+add_executable(DataStructures2
+        BST.cpp
+        BST.h
         Heap.h
-        Item.h)
+        Item.h
+        main.cpp)
