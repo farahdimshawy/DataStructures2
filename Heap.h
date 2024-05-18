@@ -170,8 +170,14 @@ void readItemsFromFile(const string& filename, Heap* heap) {
     string line;
     string name, category;
     int price;
+    bool firstLine = true;  // Flag to skip the first line
 
-    while (getline(file, line)) {
+    while (getline(file, name)) {
+        if (firstLine) {
+            firstLine = false;
+            continue;  // Skip the first line
+        }
+
         name = line;
 
         // Read category
