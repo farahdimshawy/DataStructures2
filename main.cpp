@@ -2,6 +2,7 @@
 #include <fstream>
 #include<vector>
 #include<string>
+#include <limits>
 #include "Item.h"
 #include "BST.h"
 #include "AVLTree.h"
@@ -297,7 +298,8 @@ int main() {
                         case 3: {
                             cout << "Enter name of the item you want to delete\n";
                             string name;
-                            cin >> name;
+                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                            getline(cin, name);
                             nameTree.Delete(name);
                             priceTree.Delete(name);
                             break;
@@ -353,14 +355,21 @@ int main() {
                         case 3: {
                             cout << "Enter name of the item you want to delete\n";
                             string name;
-                            cin >> name;
+                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                            getline(cin, name);
                             Item item = nameTree.Search(name);
-                            nameTree.deleteItem(item);
-                            priceTree.deleteItem(item);
+                            cout<<item.itemName;
+                            if(item.price== 0){
+                                cout<<"Item Not Found\n";
+                            }
+                            else{
+                                nameTree.deleteItem(item);
+                                priceTree.deleteItem(item);
+                            }
                             break;
                         }
                         case 4:
-                            nameTree.preorder(nameTree.getRoot());
+                            priceTree.preorder(priceTree.getRoot());
                             break;
                         case 5:
                             nameTree.Inorder(nameTree.getRoot());
