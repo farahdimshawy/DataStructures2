@@ -20,6 +20,7 @@ void readItems(istream& is, BST& tree) {
         std::getline(is, category);
         is >> price;
         is.ignore();
+        is.ignore();
         tree.insert(new Item(name, category, price));
     }
 }
