@@ -1,53 +1,55 @@
 #ifndef AVLTREE_H
 #define AVLTREE_H
 #include "Item.h"
-struct Node{
-    Node* left;
+struct NodeAVL{
+    NodeAVL* left;
     Item item;
-    Node* right;
+    NodeAVL* right;
     int height;
-};
+    };
 
 class PriceAVLTree{
-
-    Node* root;
 private:
-    Node* createNode(Item item);
-    int height(Node* node);
-    int BF(Node* node);
-    Node* rightRotate(Node* parent);
-    Node* leftRotate(Node* parent);
-    Node* insert(Node* node,Item item);
-    Node* minTreeNode(Node *node);
-    Node* deleteNode(Node* node,Item item);
+    NodeAVL* root;
+    NodeAVL* createNodeAVL(Item item);
+    int height(NodeAVL* node);
+    int BF(NodeAVL* node);
+    NodeAVL* rightRotate(NodeAVL* parent);
+    NodeAVL* leftRotate(NodeAVL* parent);
+    NodeAVL* insert(NodeAVL* node,Item item);
+    NodeAVL* minTreeNodeAVL(NodeAVL *node);
+    NodeAVL* deleteNodeAVL(NodeAVL* node,Item item);
 public:
+
     PriceAVLTree();
-    void insertNode(Item item);
-   
+    void insertNodeAVL(Item item);
     void deleteItem(Item item);
-    void Inorder(Node *p);
-    Node* getRoot();
+    void Inorder(NodeAVL *p);
+    void InorderDesc(NodeAVL* p);
+    void preorder(NodeAVL* p);
+    NodeAVL* getRoot();
     
 };
 class NameAVLTree{
-
-    Node* root;
+    NodeAVL* root;
 private:
-    Node* createNode(Item item);
-    int height(Node* node);
-    int BF(Node* node);
-    Node* rightRotate(Node* parent);
-    Node* leftRotate(Node* parent);
-    Node* insert(Node* node,Item item);
-    Node* minTreeNode(Node *node);
-    Node* deleteNode(Node* node,Item item);
+    NodeAVL* createNodeAVL(Item item);
+    int height(NodeAVL* node);
+    int BF(NodeAVL* node);
+    NodeAVL* rightRotate(NodeAVL* parent);
+    NodeAVL* leftRotate(NodeAVL* parent);
+    NodeAVL* insert(NodeAVL* node,Item item);
+    NodeAVL* minTreeNodeAVL(NodeAVL *node);
+    NodeAVL* deleteNodeAVL(NodeAVL* node,Item item);
 public:
     NameAVLTree();
-    void insertNode(Item item);
-   
+    void insertNodeAVL(Item item);
     void deleteItem(Item item);
-    void Inorder(Node *p);
-    Node* getRoot();
+    void Inorder(NodeAVL *p);
+    void InorderDesc(NodeAVL* p);
+    void preorder(NodeAVL* p);
+    NodeAVL* getRoot();
+    Item Search(string name);
     
 };
 #endif
