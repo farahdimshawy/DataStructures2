@@ -148,14 +148,25 @@ private:
 public:
     MinHeap(Comparator comp) : Heap(comp) {}
 };
-
+void removeEmptyLines(ifstream& file) {
+    string line;
+    ofstream temp("temp.txt");  // Temporary file to store non-empty lines
+    while (getline(file, line)) {
+        if (!line.empty()) {
+            temp << line << endl;
+        }
+    }
+    temp.close();
+    file.close();
+    file.open("temp.txt");  // Reopen the original file with non-empty lines
+}
 void readItemsFromFile(const string& filename, Heap* heap) {
     ifstream file(filename);
     if (!file.is_open()) {
         cerr << "Error: Unable to open file: " << filename << endl;
         return;
     }
-
+    removeEmptyLines(file);
     string line;
     string name, category;
     int price;
@@ -169,7 +180,7 @@ void readItemsFromFile(const string& filename, Heap* heap) {
         // Read price
         file >> price;
         file.ignore(); // Consume newline
-
+        file.ignore();
         // Create Item object and insert into heap
         heap->insert(new Item(name, category, price));
     }
