@@ -100,6 +100,7 @@ void BST::inorderDESC(Node* r){ // right-root-left
 }
 
 void BST::Delete(Node* parent, Node* current){
+    // first case: the node has no children
     if(current->right == NULL && current->left == NULL){
         if(parent == NULL) {
             root = NULL;
@@ -160,7 +161,12 @@ void BST::Delete(string name){
         else
             current = current->right;
      }
-    // first case: the node has no children
+    // Check if the itema exists
+    if(current == NULL){
+        cerr << "Item not found!\n";
+        return;
+    }
+    // First case: the node has no children
     if(current->right == NULL && current->left == NULL){
         if(parent == NULL) {
             root = NULL;
