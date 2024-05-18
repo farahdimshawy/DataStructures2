@@ -134,7 +134,7 @@ void maxHeapMenu() {
             }
             case 3: {//remove
                 clearScreen();
-                cout << "\nRemoving Top...";
+                cout << "\nRemoving Top...\n";
                 maxHeap.removeTop();
                 // Your Max Heap remove function
                 clearScreen();
