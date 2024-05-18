@@ -10,4 +10,6 @@ add_executable(DataStructures2
         BST.h
         Heap.h
         Item.h
-        main.cpp)
+        main.cpp
+        AVLTree.cpp
+        AVLTree.h)
