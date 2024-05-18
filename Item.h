@@ -21,7 +21,7 @@ public:
         category = "category";
         price = 0;
     }
-    Item(string name, string cat, int p) : itemName(std::move(name)), category(std::move(cat)), price(p) {}
+    Item(string name, string cat, double p) : itemName(std::move(name)), category(std::move(cat)), price(p) {}
 
     bool operator<(const Item& otherItem) const {
         return this->itemName < otherItem.itemName;
