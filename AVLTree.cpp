@@ -1,38 +1,38 @@
 #include"AVLTree.h"
-Node* PriceAVLTree::createNode(Item item){
-    Node* newNode = new Node();
-    newNode->item = item;
-    newNode->left = NULL;
-    newNode->right =NULL;
-    newNode->height = 1;
-    return newNode;
+NodeAVL* PriceAVLTree::createNodeAVL(Item item){
+    NodeAVL* newNodeAVL = new NodeAVL();
+    newNodeAVL->item = item;
+    newNodeAVL->left = NULL;
+    newNodeAVL->right =NULL;
+    newNodeAVL->height = 1;
+    return newNodeAVL;
 }
-int PriceAVLTree::height(Node* node){
+int PriceAVLTree::height(NodeAVL* node){
     if(node==NULL){
         return 0;
     }
     return node->height;
 }
-int PriceAVLTree::BF(Node* node){
+int PriceAVLTree::BF(NodeAVL* node){
     return (height(node->left) - height(node->right));
 }
-Node* PriceAVLTree::rightRotate(Node* parent){
-    Node* child = parent->left;
-    Node* subchild = child->right;
+NodeAVL* PriceAVLTree::rightRotate(NodeAVL* parent){
+    NodeAVL* child = parent->left;
+    NodeAVL* subchild = child->right;
     child -> right = parent;
     parent->left = subchild;
     return child;
 }
-Node* PriceAVLTree::leftRotate(Node* parent){
-    Node* child = parent->right;
-    Node* subchild = child->left;
+NodeAVL* PriceAVLTree::leftRotate(NodeAVL* parent){
+    NodeAVL* child = parent->right;
+    NodeAVL* subchild = child->left;
     child->left = parent;
     parent->right = subchild;
     return child;
 }
-Node* PriceAVLTree::insert(Node* node,Item item){
+NodeAVL* PriceAVLTree::insert(NodeAVL* node,Item item){
     if(node==NULL){
-        return createNode(item);
+        return createNodeAVL(item);
     }
     else if(item.price <= (node->item).price){
         node->left = insert(node->left,item);
@@ -44,7 +44,7 @@ Node* PriceAVLTree::insert(Node* node,Item item){
     
     int bf = BF(node);
     //LL
-    if(bf > 1 and item.price < (node->left->item).price){
+    if(bf > 1 and item.price <= (node->left->item).price){
         node = rightRotate(node);
     }
     //RR
@@ -57,7 +57,7 @@ Node* PriceAVLTree::insert(Node* node,Item item){
         node = rightRotate(node);
     }
     //RL
-    else if(bf < -1 and item.price < (node->right->item).price){
+    else if(bf < -1 and item.price <= (node->right->item).price){
         node->right = rightRotate(node->right);
         node = leftRotate(node);
     }
@@ -65,43 +65,46 @@ Node* PriceAVLTree::insert(Node* node,Item item){
     return node;
     
 }
-Node* PriceAVLTree::minTreeNode(Node *node) {
-    Node* current = node; 
+NodeAVL* PriceAVLTree::minTreeNodeAVL(NodeAVL *node) {
+    NodeAVL* current = node; 
     while (current->left != NULL){ 
         current = current->left; 
     }
     return current;
 }
  
-Node* PriceAVLTree::deleteNode(Node* node,Item item){
+NodeAVL* PriceAVLTree::deleteNodeAVL(NodeAVL* node,Item item){
     if(node==NULL){
         return node;
     }
     
     if(item.price<(node->item).price){
-        node->left = deleteNode(node->left,item);
+        node->left = deleteNodeAVL(node->left,item);
     }
     else if(item.price>(node->item).price){
-        node->right = deleteNode(node->right,item);
+        node->right = deleteNodeAVL(node->right,item);
+    }
+    else if(node->item.itemName != item.itemName){
+        node->left = deleteNodeAVL(node->left,item);    
     }
     else{
         if(node->left == NULL and node->right == NULL){
             node =NULL;
         }
         else if(node->left == NULL){
-            Node* curr = node->right;
+            NodeAVL* curr = node->right;
             node->item = curr->item;
             delete curr;
         }
         else if(node->right == NULL){
-            Node* curr = node->left;
+            NodeAVL* curr = node->left;
             node->item = curr->item;
             delete  curr;
         }
         else{
-            Node* suc = minTreeNode(node->right);
+            NodeAVL* suc = minTreeNodeAVL(node->right);
             node->item = suc->item;
-            node->right = deleteNode(node->right,suc->item);
+            node->right = deleteNodeAVL(node->right,suc->item);
         }
     }
     if(node==NULL){
@@ -135,9 +138,9 @@ Node* PriceAVLTree::deleteNode(Node* node,Item item){
 PriceAVLTree::PriceAVLTree(){
     root=NULL;
 }
-void PriceAVLTree::insertNode(Item item){
+void PriceAVLTree::insertNodeAVL(Item item){
     if(root==NULL){
-        root = createNode(item);
+        root = createNodeAVL(item);
     }
     else{
         root = insert(root, item);
@@ -150,58 +153,69 @@ void PriceAVLTree::deleteItem(Item item){
         return;
     }
     else{
-        root = deleteNode(root, item);
+        root = deleteNodeAVL(root, item);
     }
   }
-void PriceAVLTree::Inorder(Node *p) {
+void PriceAVLTree::Inorder(NodeAVL *p) {
     if (p){
         Inorder(p->left);
         (p->item).print();
         Inorder(p->right);
     }
 }
-Node* PriceAVLTree::getRoot(){
+void PriceAVLTree::InorderDesc(NodeAVL* p){
+    if (p){
+        InorderDesc(p->right);
+        (p->item).print();
+        InorderDesc(p->left);
+    }
+}
+NodeAVL* PriceAVLTree::getRoot(){
     return root;
 }
-
-
-
-
-
-Node* NameAVLTree::createNode(Item item){
-    Node* newNode = new Node();
-    newNode->item = item;
-    newNode->left = NULL;
-    newNode->right =NULL;
-    newNode->height = 1;
-    return newNode;
+void PriceAVLTree::preorder(NodeAVL* p){
+    if(p){
+        (p->item).print();
+        preorder(p->left);
+        preorder(p->right);
+    }
 }
-int NameAVLTree::height(Node* node){
+
+
+NodeAVL* NameAVLTree::createNodeAVL(Item item){
+    NodeAVL* newNodeAVL = new NodeAVL();
+    newNodeAVL->item = item;
+    newNodeAVL->left = NULL;
+    newNodeAVL->right =NULL;
+    newNodeAVL->height = 1;
+    return newNodeAVL;
+}
+int NameAVLTree::height(NodeAVL* node){
     if(node==NULL){
         return 0;
     }
     return node->height;
 }
-int NameAVLTree::BF(Node* node){
+int NameAVLTree::BF(NodeAVL* node){
     return (height(node->left) - height(node->right));
 }
-Node* NameAVLTree::rightRotate(Node* parent){
-    Node* child = parent->left;
-    Node* subchild = child->right;
+NodeAVL* NameAVLTree::rightRotate(NodeAVL* parent){
+    NodeAVL* child = parent->left;
+    NodeAVL* subchild = child->right;
     child -> right = parent;
     parent->left = subchild;
     return child;
 }
-Node* NameAVLTree::leftRotate(Node* parent){
-    Node* child = parent->right;
-    Node* subchild = child->left;
+NodeAVL* NameAVLTree::leftRotate(NodeAVL* parent){
+    NodeAVL* child = parent->right;
+    NodeAVL* subchild = child->left;
     child->left = parent;
     parent->right = subchild;
     return child;
 }
-Node* NameAVLTree::insert(Node* node,Item item){
+NodeAVL* NameAVLTree::insert(NodeAVL* node,Item item){
     if(node==NULL){
-        return createNode(item);
+        return createNodeAVL(item);
     }
     else if(item.itemName < (node->item).itemName){
         node->left = insert(node->left,item);
@@ -234,43 +248,43 @@ Node* NameAVLTree::insert(Node* node,Item item){
     return node;
     
 }
-Node* NameAVLTree::minTreeNode(Node *node) {
-    Node* current = node; 
+NodeAVL* NameAVLTree::minTreeNodeAVL(NodeAVL *node) {
+    NodeAVL* current = node; 
     while (current->left != NULL){ 
         current = current->left; 
     }
     return current;
 }
  
-Node* NameAVLTree::deleteNode(Node* node,Item item){
+NodeAVL* NameAVLTree::deleteNodeAVL(NodeAVL* node,Item item){
     if(node==NULL){
         return node;
     }
     
     if(item.itemName<(node->item).itemName){
-        node->left = deleteNode(node->left,item);
+        node->left = deleteNodeAVL(node->left,item);
     }
     else if(item.itemName>(node->item).itemName){
-        node->right = deleteNode(node->right,item);
+        node->right = deleteNodeAVL(node->right,item);
     }
     else{
         if(node->left == NULL and node->right == NULL){
             node =NULL;
         }
         else if(node->left == NULL){
-            Node* curr = node->right;
+            NodeAVL* curr = node->right;
             node->item = curr->item;
             delete curr;
         }
         else if(node->right == NULL){
-            Node* curr = node->left;
+            NodeAVL* curr = node->left;
             node->item = curr->item;
             delete  curr;
         }
         else{
-            Node* suc = minTreeNode(node->right);
+            NodeAVL* suc = minTreeNodeAVL(node->right);
             node->item = suc->item;
-            node->right = deleteNode(node->right,suc->item);
+            node->right = deleteNodeAVL(node->right,suc->item);
         }
     }
     if(node==NULL){
@@ -304,9 +318,9 @@ Node* NameAVLTree::deleteNode(Node* node,Item item){
 NameAVLTree::NameAVLTree(){
     root=NULL;
 }
-void NameAVLTree::insertNode(Item item){
+void NameAVLTree::insertNodeAVL(Item item){
     if(root==NULL){
-        root = createNode(item);
+        root = createNodeAVL(item);
     }
     else{
         root = insert(root, item);
@@ -319,16 +333,52 @@ void NameAVLTree::deleteItem(Item item){
         return;
     }
     else{
-        root = deleteNode(root, item);
+        root = deleteNodeAVL(root, item);
     }
   }
-void NameAVLTree::Inorder(Node *p) {
+void NameAVLTree::Inorder(NodeAVL *p) {
     if (p){
         Inorder(p->left);
         (p->item).print();
         Inorder(p->right);
     }
 }
-Node* NameAVLTree::getRoot(){
+void NameAVLTree::InorderDesc(NodeAVL* p){
+    if (p){
+        InorderDesc(p->right);
+        (p->item).print();
+        InorderDesc(p->left);
+    }
+}
+void NameAVLTree::preorder(NodeAVL* p){
+    if(p){
+        (p->item).print();
+        preorder(p->left);
+        preorder(p->right);
+    }
+}
+
+NodeAVL* NameAVLTree::getRoot(){
     return root;
+}
+Item NameAVLTree::Search(string name){
+    NodeAVL* curr = root;
+    NodeAVL* prev = NULL;
+    while(curr !=NULL){
+        prev= curr;
+        if(name < curr->item.itemName){
+            curr = curr->left;
+        }
+        if(name > curr->item.itemName){
+            curr = curr->right;
+        }
+        if(name == curr->item.itemName){
+            break;
+        }
+    }
+    if(curr == NULL){
+        Item item;
+        return item;
+    }
+    return curr->item;
 }
