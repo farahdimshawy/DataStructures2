@@ -166,6 +166,7 @@ void readItemsFromFile(const string& filename, Heap* heap) {
         cerr << "Error: Unable to open file: " << filename << endl;
         return;
     }
+
     removeEmptyLines(file);
     string line;
     string name, category;
