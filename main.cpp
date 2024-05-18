@@ -261,8 +261,8 @@ int main() {
         cout << "Choose a non-linear data structure..\n";
         cout << "1. Binary Search Tree\n";
         cout << "2. AVL Tree\n";
-        cout << "4. Max Heap\n";
-        cout << "5. Min Heap\n";
+        cout << "3. Max Heap\n";
+        cout << "4. Min Heap\n";
         cout << "0. Exit\n";
         int type;
         cin >> type;
@@ -381,10 +381,10 @@ int main() {
                 }
                 break;
             }
-            case 4:
+            case 3:
                 maxHeapMenu();
                 break;
-            case 5:
+            case 4:
                 minHeapMenu();
                 break;
             case 0:
