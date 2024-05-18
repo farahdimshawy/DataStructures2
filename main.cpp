@@ -1,7 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include<vector>
+#include<string>
 #include "Item.h"
 #include "BST.h"
+#include "AVLTree.h"
 using namespace std;
 
 void readItems(istream& is, BST& tree) {
@@ -10,17 +13,35 @@ void readItems(istream& is, BST& tree) {
     is.ignore();
 
     for (int i = 0; i < numItems; ++i) {
-
         std::string name;
         std::string category;
         double price;
-
         std::getline(is, name);
         std::getline(is, category);
         is >> price;
         is.ignore();
         tree.insert(new Item(name, category, price));
     }
+}
+vector<Item> readFile(string filename){
+    vector<Item> items;
+    ifstream file(filename);
+    string nS;
+    getline(file,nS);
+    int n = stoi(nS);
+    for(int i =0; i<n; i++){
+        string name;
+        string category;
+        string price;
+        getline(file,name);
+        getline(file,category);
+        getline(file,price);
+        Item item(name,category,stod(price));
+        items.push_back(item);
+        string dummy;
+        getline(file,dummy);
+    }
+    return items;
 }
 
 void miniMenu(){
@@ -43,7 +64,7 @@ int main() {
     int type;
     cin >> type;
     switch (type) {
-        case 1: {
+        case 1:{ 
             BST nameTree, priceTree(false);
             cout << "Choose one of the following choices..\n";
             miniMenu();
@@ -100,8 +121,63 @@ int main() {
             }
             break;
         }
-        case 2:
+        case 2:{
+            PriceAVLTree priceTree;
+            NameAVLTree nameTree;
+            cout << "Choose one of the following choices..\n";
+            miniMenu();
+            int choice;
+            while (cin >> choice, choice != 0) {
+                switch (choice) {
+                    case 1: {
+                        string name, category;
+                        double price;
+                        cout << "Enter item name, category, price (space separated)\n";
+                        cin >> name >> category >> price;
+                        Item item(name, category, price);
+                        nameTree.insertNodeAVL(item);
+                        priceTree.insertNodeAVL(item);
+                        break;
+                    }
+                    case 2: {
+                        vector<Item> items = readFile("items.txt");
+                        for(auto item : items){
+                            nameTree.insertNodeAVL(item);
+                            priceTree.insertNodeAVL(item);
+                        }
+                        break;
+                    }
+                    case 3: {
+                        cout << "Enter name of the item you want to delete\n";
+                        string name;
+                        cin >> name;
+                        Item item = nameTree.Search(name);
+                        nameTree.deleteItem(item);
+                        priceTree.deleteItem(item);
+                        break;
+                    }
+                    case 4:
+                        nameTree.preorder(nameTree.getRoot());
+                        break;
+                    case 5:
+                        nameTree.Inorder(nameTree.getRoot());
+                        break;
+                    case 6:
+                        nameTree.InorderDesc(nameTree.getRoot());
+                        break;
+                    case 7:
+                        priceTree.Inorder(priceTree.getRoot());
+                        break;
+                    case 8:
+                        priceTree.InorderDesc(priceTree.getRoot());
+                        break;
+                    default:
+                        cout << "Invalid choice\n";
+                }
+                miniMenu();
+            }
             break;
+        }
         case 3:
             break;
         default:
