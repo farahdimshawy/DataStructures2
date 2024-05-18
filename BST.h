@@ -4,7 +4,7 @@
 
 #ifndef BST_BST_H
 #define BST_BST_H
-#include "item.h"
+#include "Item.h"
 
 class Node{
 public:
