@@ -34,13 +34,7 @@ public:
         int i = heap.size();
         heap.emplace_back(new HeapNode(item));
         HeapNode* temp = heap[i]; // Store the newly inserted node
-
-        while (i > 0 && comparator(*temp->item, *heap[(i - 1) / 2]->item)) {
-            heap[i] = heap[(i - 1) / 2]; // Move parent down
-            i = (i - 1) / 2; // Move to the parent index
-        }
-
-        heap[i] = temp;
+        heapifyUp(i);
     }
     void changeComapartor(Comparator comp){
         comparator= comp;
@@ -53,8 +47,8 @@ public:
     virtual void removeTop() {
         if (heap.empty()) return;
         delete heap[0];
-        heap[0] = heap.back();
-        heap.pop_back();
+        heap[0] = heap.back(); //Replace the root of the heap with the last element on the last level
+        heap.pop_back();//Delete the last element from the Heap.
         heapifyDown(0);
     }
 
@@ -77,13 +71,13 @@ public:
 class MaxHeap : public Heap {
 private:
     void heapifyUp(int index) override {
-        int parent = (index - 1) / 2;
         while (index > 0) {
+            int parent = (index - 1) / 2; //calculate the parent's index
             if (comparator(*heap[index]->item, *heap[parent]->item)) {
                 swap(heap[index], heap[parent]);
-                index = parent;
+                index = parent; //move up to the parent's index
             } else {
-                break; // Stop if the parent is smaller
+                break; // Stop if the parent is greater or equal
             }
         }
     }

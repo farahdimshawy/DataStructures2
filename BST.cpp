@@ -71,8 +71,8 @@ void BST::preorder(Node* r) { // root-left-right
         return;
     }
     r->data->print();
-    inorderASC(r->left);
-    inorderASC(r->right);
+    preorder(r->left);
+    preorder(r->right);
 }
 
 void BST::inorderASC(Node* r) { // left-root-right
@@ -99,118 +99,119 @@ void BST::inorderDESC(Node* r){ // right-root-left
     inorderDESC(r->left);
 }
 
-void BST::Delete(Node* parent, Node* current){
-    // first case: the node has no children
-    if(current->right == NULL && current->left == NULL){
-        if(parent == NULL) {
+void BST::Delete(Node* parent, Node* current) {
+    // First case: the node has no children
+    if (current->right == NULL && current->left == NULL) {
+        if (parent == NULL) {
             root = NULL;
-        } 
-        else if(parent->left == current) {
+        } else if (parent->left == current) {
             parent->left = NULL;
-        } 
-        else {
+        } else {
             parent->right = NULL;
         }
+        delete current;  // Delete the node
         return;
     }
-    // second case: the node has one child
-    else if(current->right == NULL){
-        if(parent == NULL) {
+        // Second case: the node has one child
+    else if (current->right == NULL) {
+        if (parent == NULL) {
             root = current->left;
-        } 
-        else if(parent->left == current) {
+        } else if (parent->left == current) {
             parent->left = current->left;
-        } 
-        else {
+        } else {
             parent->right = current->left;
         }
-    }
-    else if(current->left == NULL){
-        if(parent == NULL) {
+        delete current;  // Delete the node
+    } else if (current->left == NULL) {
+        if (parent == NULL) {
             root = current->right;
-        } 
-        else if(parent->left == current) {
+        } else if (parent->left == current) {
             parent->left = current->right;
-        } 
-        else {
+        } else {
             parent->right = current->right;
         }
+        delete current;  // Delete the node
     }
-    // third case: the node has two children
-    else{
+        // Third case: the node has two children
+    else {
         Node* temp = minNode(current->right);
         parent = parent_search(temp->data->itemName);
-        current->data->itemName = temp->data->itemName;
-        current->data->category = temp->data->category;
-        current->data->price = temp->data->price;
-        Delete(parent, temp);
+        // Swap data
+        swap(current->data, temp->data);
+        // Recursively delete the node with the minimum value in the right subtree
+        Delete(current, temp);
     }
 }
 
-void BST::Delete(string name){
-    if (root == NULL){
+
+void BST::Delete(string name) {
+    if (root == NULL) {
         cerr << "Tree is empty!\n";
         return;
     }
+
     Node* current = root;
     Node* parent = NULL;
-    while(current != NULL && current->data->itemName != name) {
+
+    // Find the node to delete
+    while (current != NULL && current->data->itemName != name) {
         parent = current;
         if (name < current->data->itemName)
             current = current->left;
         else
             current = current->right;
-     }
-    // Check if the itema exists
-    if(current == NULL){
+    }
+
+    // Check if the item exists
+    if (current == NULL) {
         cerr << "Item not found!\n";
         return;
     }
-    // First case: the node has no children
-    if(current->right == NULL && current->left == NULL){
-        if(parent == NULL) {
+
+    // Case 1: Node has no children
+    if (current->right == NULL && current->left == NULL) {
+        if (parent == NULL) {
+            // Deleting the root node
+            delete root;
             root = NULL;
-        } 
-        else if(parent->left == current) {
+        } else if (parent->left == current) {
+            delete parent->left;
             parent->left = NULL;
-        } 
-        else {
+        } else {
+            delete parent->right;
             parent->right = NULL;
         }
     }
-    // second case: the node has one child
-    else if(current->right == NULL){
-        if(parent == NULL) {
+        // Case 2: Node has one child
+    else if (current->right == NULL) {
+        if (parent == NULL) {
             root = current->left;
-        } 
-        else if(parent->left == current) {
+        } else if (parent->left == current) {
             parent->left = current->left;
-        } 
-        else {
+        } else {
             parent->right = current->left;
         }
-    }
-    else if(current->left == NULL){
-        if(parent == NULL) {
+        delete current;
+    } else if (current->left == NULL) {
+        if (parent == NULL) {
             root = current->right;
-        } 
-        else if(parent->left == current) {
+        } else if (parent->left == current) {
             parent->left = current->right;
-        } 
-        else {
+        } else {
             parent->right = current->right;
         }
+        delete current;
     }
-    // third case: the node has two children
-    else{
+        // Case 3: Node has two children
+    else {
         Node* temp = minNode(current->right);
-        parent = parent_search(temp->data->itemName);
-        current->data->itemName = temp->data->itemName;
-        current->data->category = temp->data->category;
-        current->data->price = temp->data->price;
-        Delete(parent, temp);
+        // Swap data
+        swap(current->data, temp->data);
+        // Recursively delete the node with the minimum value in the right subtree
+        Delete(current->data->itemName);
     }
 }
+
 
 Node* BST::search(string name) {
     Node *current = root;
